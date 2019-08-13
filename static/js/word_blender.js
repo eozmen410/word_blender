@@ -5,8 +5,11 @@ const request = { sources: ['window', 'screen', 'tab'] };
 const EXTENSION_ID = 'YOUR_EXTENSION_ID';
 
 var fonts = ["Helvetica,sans-serif","Cambria","Georgia,serif","Rockwell","Courier","Times New Roman,serif", "Papyrus,fantasy", "Brush Script MT,cursive"]
- 
+
 $(document).ready(function(){
+//   append_route_btn('findSymbols', 'search')
+//   append_route_btn('blend_word', 'pencil')
+//   append_route_btn('shape_editor', 'edit')
     console.log(input_words)
     console.log(symbols)
     // load_saved_symbols()
@@ -36,6 +39,8 @@ $(document).ready(function(){
                                 $(c).data('file',symbols[key]['selected_files'][select]['file_name'] )
                                 canvas_ids_dict[c_id]['file_name'] = symbols[key]['selected_files'][select]['file_name']
                                 canvas_ids_dict[c_id]['word']  = concept
+                                canvas_ids_dict[c_id]['font_color'] = "000000"
+                                canvas_ids_dict[c_id]['back_color'] = "FFFFFF"
                                 populate_canvas_for_word_letter(c, concept, $(c).data('image'), $(c).data('letter'), $(c).data('file'))
                                 // add_shape_editor_btn(key, c_id) 
                                 if (first_one) {
@@ -61,6 +66,9 @@ var canvas_fabr //= new fabric.Canvas()
 var active_canvas = NaN
 // var last_added_img =""
 var canvas_ids_dict = {}
+
+// var font_col = active_canvas.fill;
+// var back_col = active_canvas.backgroundColor;
 
 // function add_shape_editor_btn(img_id, where) {
 //     var to_edit = $("<button>")
@@ -140,7 +148,7 @@ function load_fonts(random_id, font_array, concept) {
     }
 }
  
-function make_color_picker(associated_canvas,random_id, img_obj){
+function make_color_picker(associated_canvas,random_id){
     // font stuff
     var img_canvas = $("<canvas class='img_canvas'>")
    
@@ -274,39 +282,141 @@ function make_color_picker(associated_canvas,random_id, img_obj){
     // $("#font_sidebar").append(canvas_div)
     //  $('#div_img_' +random_id).hide(); //hide color picker for font
     
+    var hex_input_back = $("<input>")
+    $(hex_input_back).addClass('ourinput')
+    $(hex_input_back).attr('id', 'input_back_' + random_id)
+   
+    // $("#pallete_hex_"+random_id).append("Input hex value<br>")
+    // $("#pallete_hex_"+random_id).append("Or input a hex value<br>")
+    var hint = $("<div>Or input hex value<br></div>")
+    $(hint).attr('id', 'hint_'+random_id)
+
+
     
+    $("#pallete_hex_"+random_id).append(hex_input_back)
+    $("#pallete_hex_"+random_id).prepend(hint)
+
+
+    $('#input_back_' + random_id).hide();
+    $('#hint_' + random_id).hide();
+    
+
+    $(hex_input_back).keypress(function(e){
+        if(e.which == 13) {
+           var hex =  $(this).val()
+           if ((hex).substring(0,1)!= "#"){
+               hex = "#"+hex;
+           }
+
+            change_color_back(active_canvas, random_id, "hex_back_auto_", hex)
+            //add the color as a later option!
+            save_color_back(random_id, hex)
+            $(this).val('')
+
+        }
+        })
+
+        var hex_input = $("<input>")
+        $(hex_input).addClass('ourinput')
+        $(hex_input).attr('id', 'input_font_' + random_id)
+
+       
+        $("#pallete_hex_"+random_id).append(hex_input)
+        $('#input_font_' + random_id).hide();
+        
+        $(hex_input).keypress(function(e){
+            if(e.which == 13) {
+               var hex =  $(this).val()
+               if ((hex).substring(0,1)!= "#"){
+                   hex = "#"+hex;
+                  
+               }
+    
+                change_color(active_canvas, random_id, "hex_font_", hex)
+                //add the color as a later option!
+                save_color(random_id, hex)
+                $(this).val('')
+    
+            }
+            })
+    
+           
+    
+    
+        
+        // $("#pallete_hex_"+random_id).append(hex_input)
+        // $("#pallete_hex_"+random_id).append(hex_input_back)
+
     $(search_font_colors_butt).click(function(){
         $( "#pallete_mixer_"+random_id).empty()
-        $(canvas_div).append(done_selecting_font_color_butt)
+        // $("#pallete_hex_"+random_id).empty()
+        //$(canvas_div).append(done_selecting_font_color_butt)
         $( "#pallete_mixer_"+random_id).append(canvas_div)
         $('#div_img_back' +random_id).hide();
         $('#div_img_' +random_id).show();
         $("#sq_" + random_id).show();
-        $( "#pallete_mixer_"+random_id).prepend("Select font colors from image:")
-
+        $('#input_back_' + random_id).hide();
+        $('#input_font_' + random_id).show();
+        $( "#pallete_mixer_"+random_id).prepend("Select font colors from image<hr>")
+        // $("#pallete_hex_"+random_id).prepend("Or input hex value<br>")
+        $('#hint_' + random_id).show();
+        
+       
+       
+        // $(hex_input).keypress(function(e){
+        //     if(e.which == 13) {
+        //        var hex =  $(this).val()
+        //        if ((hex).substring(0,1)!= "#"){
+        //            hex = "#"+hex;
+                  
+        //        }
+    
+        //         change_color(active_canvas, hex)
+        //         //add the color as a later option!
+        //         save_color(random_id, hex)
+        //         // $(this).val('')
+    
+        //     }
+        //     })
+    
+           
+       
     })
     $(done_selecting_font_color_butt).click(function(){
         $( "#pallete_mixer_"+random_id).empty()
+        // $("#pallete_hex_"+random_id).empty()
         
 
     })
 
     $(search_back_colors_butt).click(function(){
         $( "#pallete_mixer_"+random_id).empty()
-        $(canvas_div_back).append(done_selecting_back_color_butt)
+        // $("#pallete_hex_"+random_id).empty()
+       // $(canvas_div_back).append(done_selecting_back_color_butt)
         $( "#pallete_mixer_"+random_id).append(canvas_div_back)
+        $( "#pallete_mixer_"+random_id).prepend("Select background colors from image<hr>")
+        // $("#pallete_hex_"+random_id).append("Input hex value<br>")
+        $('#input_back_' + random_id).show();
+        $('#input_font_' + random_id).hide();
+        $('#hint_' + random_id).show();
 
 
         // $('#div_img_' +random_id).hide();
         // $('#div_img_back' +random_id ).show();
         // $("#sq_" + random_id).show();
-        $( "#pallete_mixer_"+random_id).prepend("Select background colors from image:")
+       
+        
+    
+
 
 
        
     })
     $(done_selecting_back_color_butt).click(function(){
         $( "#pallete_mixer_"+random_id).empty()
+        console.log($( "#pallete_mixer_"+random_id))
+        // $("#pallete_hex_"+random_id).empty()
+
 
 
     })
@@ -318,12 +428,12 @@ function make_color_picker(associated_canvas,random_id, img_obj){
     $("#canvas_container").append('<br>')
     $("#canvas_container").append('<br>')
     var fontheader = $("<div>")
-    $(fontheader).html("<span class = 'glyphicon glyphicon-text-color'></span>  Font Color<hr>")
+    $(fontheader).html("Font Color<hr>")
     $(fontheader).addClass('color')
     $(fontheader).attr('id', "fontheader_"+ random_id)
 
     var fontbacker = $("<div>")
-    $(fontbacker).html("<br><span class = 'glyphicon glyphicon-text-background'></span>  Background Color<hr>")
+    $(fontbacker).html("<br>Background Color<hr>")
     $(fontbacker).addClass('color')
     $(fontbacker).attr('id', "fontbacker_"+ random_id)
 
@@ -339,8 +449,10 @@ function make_color_picker(associated_canvas,random_id, img_obj){
     $("#pallete_"+random_id).append(auto_back)
     $("#pallete_"+random_id).append(saved_back)
     $("#pallete_"+random_id).append(search_back_colors_butt)
-    
 
+  
+    
+    
 
     
     // $("#font_sidebar").append(color_div_encompass)
@@ -371,13 +483,16 @@ function make_color_picker(associated_canvas,random_id, img_obj){
     var context_back = img_canvas_back[0].getContext('2d');
     var img = new Image();
     var img_src = '../static/images/';
-        if (img_obj['selected_file_name']!= ""){
-        img_src += img_obj['selected_file_name']
-        }else if (img_obj['extracted_file_name'] != "") {
-            img_src+= img_obj['extracted_file_name']
-        } else {
-            img_src  += img_obj['file_name']
-        }
+    img_src += canvas_ids_dict[random_id]['file_name']
+    console.log("SRC SRC SRC" + img_src)
+    console.log("RANDO RANDO RANDO " + random_id)
+        // if (img_obj['selected_file_name']!= ""){
+        // img_src += img_obj['selected_file_name']
+        // }else if (img_obj['extracted_file_name'] != "") {
+        //     img_src+= img_obj['extracted_file_name']
+        // } else {
+        //     img_src  += img_obj['file_name']
+        // }
         // img.crossOrigin = "Anonymous";
         img.height = 150;
         
@@ -414,7 +529,7 @@ function make_color_picker(associated_canvas,random_id, img_obj){
             $("#" + active_canvas.id).removeClass('active_canvas')
             $("#" + associated_canvas.id).addClass('active_canvas')
             active_canvas = associated_canvas}
-        change_color(active_canvas, hex)
+        change_color(active_canvas, random_id, "hex_font_", hex)
         //add the color as a later option!
         save_color(random_id, hex)
     });
@@ -452,7 +567,7 @@ function make_color_picker(associated_canvas,random_id, img_obj){
             $("#" + active_canvas.id).removeClass('active_canvas')
             $("#" + associated_canvas.id).addClass('active_canvas')
             active_canvas = associated_canvas}
-        change_color_back(active_canvas, hex)
+        change_color_back(active_canvas, random_id, "hex_back_auto_", hex)
         //add the color as a later option!
         save_color_back(random_id, hex)
     });
@@ -507,9 +622,15 @@ function auto_fill_back(random_id){
     var arr= ['#FFFFFF','#C7C7C7','#939393', '#666666' , '#000000']
     for (var i = arr.length-1; i >= 0 ; i--){
            
-        var color_butt= ("<button onclick= \"change_color_back(\'" +  active_canvas +"\',\'" +arr[i] + "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+        var color_butt= $("<button onclick= \"change_color_back(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + "hex_back_"+ "\',\'" + arr[i] + "\')\""+" class = 'save_color'></button>")
+        $(color_butt).css('background-color', arr[i])
         $("#auto_back"+random_id).append(color_butt)
+        $(color_butt).addClass("hex_back_")
+        $(color_butt).attr('id',"hex_back_"+random_id +"_"+arr[i].substring(1) )
+        $("#hex_back_"+random_id +"_"+arr[0].substring(1)).addClass('selected_butt')
     }
+
+    
 
 
 }
@@ -517,17 +638,26 @@ function auto_fill(random_id){
     var arr= ['#FFFFFF','#C7C7C7','#939393', '#666666' , '#000000']
     for (var i = arr.length-1; i >= 0 ; i--){
            
-        var color_butt= ("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" +arr[i] + "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+        var color_butt= $("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + "hex_auto_"+ "\',\'" + arr[i] + "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
         $("#auto_"+random_id).append(color_butt)
+        $(color_butt).addClass("hex_auto_")
+        $(color_butt).attr('id',"hex_auto_"+random_id +"_"+arr[i].substring(1) )
     }
-
-
+   
+    $("#hex_auto_"+random_id +"_"+arr[arr.length-1].substring(1)).addClass('selected_butt')
 }
 
 
 function save_color(random_id, hex){
-    var color_butt = ("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" +hex + "\')\""+" class = 'save_color' style= 'background-color:" + hex+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
-    
+    canvas_ids_dict[active_canvas.id]['font-color'] = hex.substring(1)
+
+    var myEle = document.getElementById("hex_font_" + random_id + "_"+hex.substring(1) );
+    if(!myEle){
+
+    var color_butt = $("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + "hex_font_" + "\',\'" + hex+ "\')\""+" class = 'save_color' style= 'background-color:" + hex+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+    $(color_butt).attr('id', "hex_font_" + random_id + "_"+hex.substring(1))
+    $(color_butt).addClass("hex_font_")
+    $(color_butt).addClass("selected_butt")
     $("#saved_" +random_id).append(color_butt)
     //add hex to string
     var hex_str = $("#saved_"+random_id).data('arr')
@@ -560,17 +690,28 @@ function save_color(random_id, hex){
         
         for (var i = 0; i < arr.length; i++){
            
-            var color_butt_2 = ("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" +arr[i] + "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
-            $("#saved_"+random_id).append(color_butt_2)
+            var color_butt_2 = $("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + "hex_font_" + "\',\'" + arr[i]+ "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+            
             // $("#saved_" +random_id).append(color_butt_2)
+
+            $(color_butt_2).attr('id', "hex_font_" + random_id + "_"+arr[i].substring(1))
+            $(color_butt_2).addClass("hex_font_")
+
+            $("#saved_"+random_id).append(color_butt_2)
+            
+            
             
             
 
 
             
         }
+        $(("#hex_font_" + random_id + "_"+arr[arr.length-1].substring(1))).addClass('selected_butt')
         $("#saved_"+random_id).data('num_butts',5 )
         $("#saved_"+random_id).data('arr',res )
+        // $("#hex_font_"+ active_canvas.id + "_"+ arr[arr.length-1].substring(1)).addClass("selected_butt")
+
+        
        
 
 
@@ -583,16 +724,28 @@ function save_color(random_id, hex){
         $("#saved_"+random_id).data('num_butts', inter + 1)
     }
 }
+else
+change_color(active_canvas, random_id, "hex_font_" ,hex)
+}
 
 function save_color_back(random_id, hex){
-    var color_butt = ("<button onclick= \"change_color_back(\'" +  active_canvas +"\',\'" +hex + "\')\""+" class = 'save_color' style= 'background-color:" + hex+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
-    
+
+    var myEle = document.getElementById("hex_back_auto_" + random_id + "_"+hex.substring(1) );
+    if(!myEle){
+        var str = "hex_back_auto_"
+    var color_butt = $("<button onclick= \"change_color_back(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + str + "\',\'" + hex+ "\')\""+" class = 'save_color_back' style= 'background-color:" + hex+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+   
+    $(color_butt).attr('id', "hex_back_auto_" + random_id + "_"+hex.substring(1))
+    $(color_butt).addClass("hex_back_auto_")
+    $(color_butt).addClass("selected_butt")
     $("#saved_back_" +random_id).append(color_butt)
     //add hex to string
     var hex_str = $("#saved_back_"+random_id).data('arr')
     var hex_str = hex_str +  hex +",";
     
     $("#saved_back_"+random_id).data('arr',hex_str )
+
+
     
     // alert(arr)
 
@@ -619,10 +772,16 @@ function save_color_back(random_id, hex){
         
         for (var i = 0; i < arr.length; i++){
            
-            var color_butt_2 = ("<button onclick= \"change_color(\'" +  active_canvas +"\',\'" +arr[i] + "\')\""+" class = 'save_color' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
-            $("#saved_back_"+random_id).append(color_butt_2)
+            var color_butt_2 = $("<button onclick= \"change_color_back(\'" +  active_canvas +"\',\'" + random_id +"\',\'" + "hex_back_auto_"+ "\',\'" + arr[i] + "\')\""+" class = 'save_color_back' style= 'background-color:" + arr[i]+"; border: 1px solid #f0f0f0; border-radius: 50%; height: 25px; width:25px'></button>")
+            $(color_butt_2).attr('id', "hex_back_auto_" + random_id + "_"+arr[i].substring(1))
+          
             // $("#saved_" +random_id).append(color_butt_2)
             
+
+        // $(color_butt_2).attr('id', "hex_back_auto_" + random_id + "_"+hex.substring(1))
+        $(color_butt_2).addClass("hex_back_auto_")
+        $("#saved_back_"+random_id).append(color_butt_2)
+
             
 
 
@@ -630,6 +789,7 @@ function save_color_back(random_id, hex){
         }
         $("#saved_back_"+random_id).data('num_butts',5 )
         $("#saved_back_"+random_id).data('arr',res )
+        $("#hex_back_auto_" + random_id + "_"+(arr[arr.length-1]).substring(1)).addClass('selected_butt')
        
 
 
@@ -642,12 +802,24 @@ function save_color_back(random_id, hex){
         $("#saved_back_"+random_id).data('num_butts', inter + 1)
     }
 }
+else{
+    change_color_back(active_canvas, random_id, "hex_back_auto_" , hex )
+}
+}
 
 function change_color_block(hex, random_id ){
  console.log(hex)
  $("#sq_" +random_id).css('background-color', hex) 
 }
-function change_color(canvas, _hex){
+function change_color(canvas, random_id, str, _hex){
+    canvas_ids_dict[random_id]['font_color'] = _hex.substring(1)
+    // font_col = _hex; 
+    $(".hex_auto_").removeClass('selected_butt')
+    $(".hex_font_").removeClass('selected_butt')
+    console.log(str)
+    $("#" + str + random_id + "_"+_hex.substring(1)).addClass('selected_butt')
+
+   
 
     active_canvas.forEachObject(function(obj){
         // obj.fontFamily = "Comic Sans MS"
@@ -669,8 +841,26 @@ function change_color(canvas, _hex){
     //change color of font
 }
 
-function change_color_back(canvas, _hex){
+function change_color_back(canvas, random_id, str, _hex){
+    canvas_ids_dict[active_canvas.id]['back_color'] = _hex.substring(1)
+    console.log(canvas_ids_dict[active_canvas.id]['back_color'])
+    console.log("ABOVE")
+    back_col = _hex;
 
+    // $(color_butt_2).attr('id', "hex_back_" + random_id + "_"+hex)
+   // $("."+str).removeClass('selected_butt')
+    $("."+"hex_back_").removeClass('selected_butt')
+    $("."+"hex_back_auto_").removeClass('selected_butt')
+   
+    
+    
+    console.log(str)
+    $("#" + str + random_id + "_"+_hex.substring(1)).addClass('selected_butt')
+    // $("#" + "hex_back_" + random_id + "_"+_hex).css('background-color', "green")
+    // alert('yeah!')
+    
+    // console.log()
+    console.log("#" + "hex_back_" + random_id + "_"+_hex)
     active_canvas.backgroundColor = _hex
     active_canvas.renderAll();
     
@@ -725,7 +915,7 @@ function make_canvas_w_random_id(_img) {
 
     var edit_pallete = $("<div>")
     $(edit_pallete).css('vertical-align', 'top')
-    $(edit_pallete).addClass('col-md-4')
+    $(edit_pallete).addClass('col-md-3')
     $(edit_pallete).attr('id', "pallete_"+random_id)
     $(edit_pallete).css('display', 'inline')
     $(edit_pallete).css('vertical-align', 'top')
@@ -733,11 +923,19 @@ function make_canvas_w_random_id(_img) {
 
     var pallete_mixer = $("<div>")
     $( pallete_mixer).css('vertical-align', 'top')
-    $( pallete_mixer).addClass('col-md-5')
+    $( pallete_mixer).addClass('col-md-4')
     $( pallete_mixer).attr('id', "pallete_mixer_"+random_id)
     $( pallete_mixer).css('display', 'inline')
     $( pallete_mixer).css('vertical-align', 'top')
     // $( pallete_mixer).css('border', '1px solid green')
+    
+    var pallete_hex = $("<div>")
+    $( pallete_hex).css('vertical-align', 'top')
+    $( pallete_hex).addClass('col-md-3')
+    $( pallete_hex).attr('id', "pallete_hex_"+random_id)
+    $( pallete_hex).css('display', 'inline')
+    $( pallete_hex).css('vertical-align', 'top')
+    // $( pallete_hex).css('border', '1px solid green')
     
     // $(edit_pallete).css('padding', '100px')
     // $(edit_pallete).css('width', '100px')
@@ -751,6 +949,7 @@ function make_canvas_w_random_id(_img) {
     $(tools).append(font_pallete)
     $(tools).append(edit_pallete)
     $(tools).append(pallete_mixer)
+    $(tools).append(pallete_hex)
     $(row_div).append(tools)
 
 
@@ -800,6 +999,7 @@ function make_canvas_w_random_id(_img) {
             $("#" + active_canvas.id).removeClass('active_canvas')
             $("#tools_" + active_canvas.id).removeClass('active_tools')
             // $("#tools_" + active_canvas.id).addClass('tools')
+           
             
             
         }
@@ -810,6 +1010,7 @@ function make_canvas_w_random_id(_img) {
         active_canvas = this
         $("#tools_" + active_canvas.id).addClass('active_tools')
 
+       
         word = canvas_ids_dict[this.id]['word']
         console.log("WORD WORD WORD: "+ word)
         load_fonts(random_id, fonts, word)
@@ -824,10 +1025,18 @@ function make_canvas_w_random_id(_img) {
         $("#" + "fontheader_"+ this.id).addClass('ourcolor')
         $("#" + "fontbacker_"+ this.id).addClass('ourcolor')
 
+        $("#hex_auto_"+active_canvas.id +"_"+(canvas_ids_dict[active_canvas.id]['font_color'])).addClass('selected_butt')
+        console.log($("#hex_auto_"+active_canvas.id +"_"+(canvas_ids_dict[active_canvas.id]['font_color'])))
+       
+        $("#hex_back_"+active_canvas.id +"_"+(canvas_ids_dict[active_canvas.id]['back_color'])).addClass('selected_butt')
+        console.log($("#hex_back_"+active_canvas.id +"_"+(canvas_ids_dict[active_canvas.id]['back_color'])))
+
         $("#" + "search_back_colors_butt_" + random_id).addClass('ourcolor')
         $("#" + "search_font_colors_butt_" + random_id).addClass('ourcolor')
         $(".color").hide();
         $(".ourcolor").show();
+      
+
         // $("#" + "saved_" + this.id).css('visibility',"visible")
         // $("#" + "auto_back"+ this.id).css('visibility',"visible")
         // $("#" + "saved_back_" + this.id).css('visibility',"visible")
@@ -868,7 +1077,7 @@ function make_canvas_w_random_id(_img) {
     //   console.log()
     });
 
-    var color_picker = make_color_picker(canvas, random_id,_img)
+    // var color_picker = make_color_picker(canvas, random_id,_img)
     // $(canvas_div).append(color_picker)
 
     return canvas_fabr
@@ -930,6 +1139,7 @@ function get_top_margin(letter, font_index){
     return top
 }
 function populate_canvas_for_word_letter(canvas_fabr, word, img_obj, letter, file_name) {
+    // canvas_fabr.set(backgroundColor("#FFFFF")
     var image_height = get_top_margin(letter, 0)
 
     //split the string
@@ -1006,7 +1216,7 @@ function populate_canvas_for_word_letter(canvas_fabr, word, img_obj, letter, fil
 
        
     })
-
+    make_color_picker(canvas_fabr, canvas_fabr.id)
     return canvas_fabr
 }
 
@@ -1032,14 +1242,17 @@ function change_font(canvas, concept, img, letter, font_val) {
     $("#" + canvas.id).data('font_id',font_id)
     $('.font_display').removeClass('selected_font')
     $('#' + font_id).addClass('selected_font')
-        populate_canvas_for_word_letter2(canvas, canvas_ids_dict[canvas.id]['word'], img, letter, font_val)
+    
+        populate_canvas_for_word_letter2(canvas, canvas_ids_dict[canvas.id]['word'], img, letter, font_val, canvas_ids_dict[canvas.id]['font_color'], canvas_ids_dict[canvas.id]['back_color'])
 
 }
 
 
-function populate_canvas_for_word_letter2(canvas_fabr, word, img_obj, letter, font_val) {
+function populate_canvas_for_word_letter2(canvas_fabr, word, img_obj, letter, font_val, font_col, back_col) {
     canvas_fabr.clear();
-    console.log("CANVAS ID : " + canvas_fabr.id)
+    canvas_fabr.backgroundColor = "#"+back_col
+
+    console.log("CANVAS ID : " + back_col)
     var file = canvas_ids_dict[canvas_fabr.id]['file_name'] // $("#" + canvas_fabr.id).data('file')
     console.log(file)
     var image_height = get_top_margin(letter, fonts.indexOf(font_val))
@@ -1059,6 +1272,7 @@ function populate_canvas_for_word_letter2(canvas_fabr, word, img_obj, letter, fo
         top:20,
         left:20,
         fontSize: 100,
+        fill: "#"+font_col,
         // isWrapping : true
     });
     console.log('logging text 1')
@@ -1160,7 +1374,7 @@ function populate_canvas_for_word_letter2(canvas_fabr, word, img_obj, letter, fo
             cursorColor :"blue",
             top:20,
             left:20 + text_1.width + img_width, //+ 80,
-
+            fill: "#"+font_col,
             fontSize: 100
         });
         canvas_fabr.add(text_2);
@@ -1230,3 +1444,16 @@ function get_obj_by_id(myId) {
     });
     return answer
 }
+
+function append_route_btn(route, icon) {
+    var form = $("<form>");
+    $(form).attr('action', '../'+ route+'/' + creator + '_' + identifier);
+    $(form).attr('method', 'post');
+    var btn = $("<button>")
+    // $(btn).addClass("btn btn-secondary");
+    $(btn).html("<span class='glyphicon glyphicon-"+ icon+"'</span>");
+    $(btn).attr('title', route);
+    $(form).append(btn);
+    $(form).css('display', 'inline-block')
+    $("#forbutt").append(form)
+  }

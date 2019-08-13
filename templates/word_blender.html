@@ -50,7 +50,7 @@
         }
         .font_display{
             /* padding:5px; */
-            padding-left:35px;
+            padding-left:15px;
             margin-bottom:5px;
             font-size:20px;
         }
@@ -74,6 +74,7 @@
             /*margin-left: -5% !important;*/
             padding: 5px;
         }
+       
         .selectedimg {
             border: 3px solid #88BCEC;
     	}
@@ -100,6 +101,13 @@
         }
         .tools{
             visibility:hidden;
+        }
+        #options{
+            background-color: #DAEAFF;
+            /* rgb(197, 221, 253); */
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)!important;
+            /* position:fixed; */
+
         }
         .active_tools{
             visibility:visible!important;
@@ -150,15 +158,33 @@
 			border-radius:50%;
 			text-transform: capitalize;
 		}
+        .selected_butt{
+            border: 2px solid  #88BCEC!important;
+            
+        }
         #page_name {
             display: inline-block;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bolder;
-            border-left: 1px solid grey;
+            border-left: .3px solid #a0a1a4;
             padding-left: 15px;
+            margin-top:5px;
+            margin-bottom:5px;
+
+        }
+        .ourinput{
+            border-radius:2px;
+            border: 1px solid #F0F0F0;
+
+        }
+       
+        .ourinput:focus{
+            outline:none!important;
+            border: 1px solid #88BCEC;
         }
         #page_container {
-            padding-top : 60px;
+            padding-top : 50px;
+            overflow:auto;
         }
         .ourcolor{
             visibility: visible!important;
@@ -186,6 +212,34 @@
   width: 50px;
   background-color: #555;
         }
+        .save_color_back{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .save_color_back_auto{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .hex_font_{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .save_color{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+
+        .save_color_back:focus{
+            outline: none;
+        }
         .save_color:focus{
             outline: none;
         }
@@ -197,6 +251,11 @@
             padding-bottom:4px;
             margin-bottom:2px;
         }
+        #home{
+            padding-left:10px;
+            padding-right:2px;
+            
+        }
        
       </style>
    </head>
@@ -206,15 +265,23 @@
 
         
            
-      <div class="row" id="stationary"> 
-        <div class='col-md-12' > <div class='row ribbon'> 
+      <div class="row" id="stationary">
+            <div id = "options">
+                    <div style="display: inline-block; vertical-align: center;"><form action="/welcome" method="get" id="form1" title="Symbol Finder home">
+       
+                   <button style="display: inline-block; vertical-align: center;" id = 'home'><span class='glyphicon glyphicon-home'> </span></button></form> </div>
+                   <div style="display: inline-block; vertical-align: bottom;" id="forbutt"></div> 
+                   <div id='page_name'>Word Blender</div></div></div>
+                   
+                   
+        <!-- <div class='col-md-12' > <div class='row ribbon'> 
                             <div style="display: inline-block; vertical-align: middle; padding-left:10px"><form action="/welcome" method="get" id="form1">
 
                                 <button ><span style = 'font-size: 18px;'class='glyphicon glyphicon-home'> </span></button></form> </div>
-                    
+                     -->
                                 <!-- <div style="display: inline-block; vertical-align: middle; padding-bottom:5px;"> 	<a href="/logout" class="logout">	<span class='logout	glyphicon glyphicon-log-out'></span></a></div> -->
-                        <div id='page_name'>Word Blender</div>
-                    </div></div></div>
+                        <!-- <div id='page_name'>Word Blender</div> -->
+                    <!-- </div></div></div> -->
 
     <div id ="page_container">
         <div class='row'>
