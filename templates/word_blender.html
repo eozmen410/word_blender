@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+        <title> Word Blender</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='js/fabric.js') }}"></script> 
+    <script type=text/javascript src="{{ url_for('static', filename='js/word_blender.js') }}"></script> 
+    <script type=text/javascript src="{{ url_for('static', filename='js/fontsizer.js') }}"></script>
+    <script type="text/javascript">
+        var input_words = {{input_words|tojson}}
+        var symbols = {{symbols_for_concept|tojson}}
+	
+	</script>
+      <style>
+           body{
+            font-family: arial,sans-serif;
+          }
+        
+         #mycanvas {
+             border:1px solid red;
+        }
+        #symbol_sidebar {
+            /* height: 100%; */
+            overflow-y : auto;
+            height: 100vh;
+            
+            /* size:24px; */
+        }
+        #font_sidebar {
+            overflow-y : auto;
+            /* height: 100vh; */
+            position:fixed;
+            font-family: arial,sans-serif;
+            font-size: 14px;
+            overflow:auto;
+        }
+        .mybutt{
+            /* border: 1px solid #D7D7D7; */
+             /* #ccc; */
+            /* border-radius: 5px; */
+            padding: 0!important;
+        }
+        .mybutt:focus{
+            outline:none!important;
+        }
+        .font_display{
+            /* padding:5px; */
+            padding-left:35px;
+            margin-bottom:5px;
+            font-size:20px;
+        }
+        .symbol {
+            padding: 2px;
+            height: 150px;
+            width:150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        #stationary{
+            position: fixed;
+            z-index:9999;
+            width:100%;
+            background-color: #FFFFFF;
+        }
+        .ribbon {
+            /*background-color: #C3D6F8;*/
+            background-color: #C5DDFD;
+            /*background-color: #f1f1f1;*/
+            /*margin-left: -5% !important;*/
+            padding: 5px;
+        }
+        .selectedimg {
+            border: 3px solid #88BCEC;
+    	}
+        .font_display {
+            font-size: 14px;
+            /* margin-left: 20px; */
+            cursor: pointer;
+        }
+        .word_canvas {
+            border:2px solid #D7D7D7; 
+            /* rgb(149, 146, 146); */
+            border-radius: 5px;
+            /* margin: 20px; */
+            
+        }
+        .active_canvas {
+            border: 5px solid #C5DDFD; 
+            /* rgb(45, 45, 187); */
+        }
+        .encompass>*{
+            margin-left:20px;
+            padding:10px;
+
+        }
+        .tools{
+            visibility:hidden;
+        }
+        .active_tools{
+            visibility:visible!important;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)!important;
+            border-radius:5px!important;
+            /* width: 10px;
+            height:10px; */
+            /* width:300px; */
+        }
+        .img_canvas{
+            /* border:1px solid rgb(149, 146, 146); */
+            /* border-radius: 5px; */
+            /* margin: 20px; */
+            height: 150px!important;
+            /* width: 150px!important; */
+            
+
+        }
+        hr{
+            margin-top:2px;
+            margin-bottom:2px;
+        }
+        .selected_font {
+            /* background-color: cornsilk; */
+            background-color: #E4E4E4;
+            border-radius: 5px !important;
+            /* border-radius: 0px 50px 50px 0px !important; */
+
+            /* border: 1px solid black; */
+        }
+        .donebutt{
+            
+            color: #5f6367!important;
+            /* border: 1px solid #D7D7D7; */
+            border-radius: 5px;
+            padding:4px 8px;
+            border:1px solid white;
+            background-color:#F0F0F0!important;
+        }
+        .donebutt:hover{
+            border:  1px solid #F0F0F0!important;
+            background-color:#F0F0F0!important;
+        }
+
+        button{
+			border-color:transparent;
+			background-color: transparent; 
+			border-radius:50%;
+			text-transform: capitalize;
+		}
+        #page_name {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bolder;
+            border-left: 1px solid grey;
+            padding-left: 15px;
+        }
+        #page_container {
+            padding-top : 60px;
+        }
+        .ourcolor{
+            visibility: visible!important;
+        }
+        .color{
+            visibility:hidden;
+        }
+        #Test {
+            position: absolute;
+            visibility: hidden;
+            height: auto;
+            width: auto;
+            white-space: nowrap; /* Thanks to Herb Caudill comment */
+            font-size:10px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        #main {
+            visibility: hidden;
+        }
+        .color_container > *{
+            padding: 20px;
+        }
+        .square {
+            height: 50px;
+  width: 50px;
+  background-color: #555;
+        }
+        .save_color:focus{
+            outline: none;
+        }
+        #canvas_container{
+            margin-left:10px;
+        }
+        #headerglyph{
+            font-size: 11px;
+            padding-bottom:4px;
+            margin-bottom:2px;
+        }
+       
+      </style>
+   </head>
+   
+   <body>
+       <div class='container-fluid'>
+
+        
+           
+      <div class="row" id="stationary"> 
+        <div class='col-md-12' > <div class='row ribbon'> 
+                            <div style="display: inline-block; vertical-align: middle; padding-left:10px"><form action="/welcome" method="get" id="form1">
+
+                                <button ><span style = 'font-size: 18px;'class='glyphicon glyphicon-home'> </span></button></form> </div>
+                    
+                                <!-- <div style="display: inline-block; vertical-align: middle; padding-bottom:5px;"> 	<a href="/logout" class="logout">	<span class='logout	glyphicon glyphicon-log-out'></span></a></div> -->
+                        <div id='page_name'>Word Blender</div>
+                    </div></div></div>
+
+    <div id ="page_container">
+        <div class='row'>
+            <!-- <div class='col-md-2' id='font_sidebar'>Fonts List:<div id='font_container'></div></div> -->
+            <div class='col-md-12'id='canvas_container'>
+            <!-- <canvas id = "mycanvas" ></canvas> -->
+            </div>
+            <!-- <div class='col-md-2'id='symbol_sidebar'>Symbols for {{concept}} <br></div> -->
+        </div>
+
+       
+    </div>
+    
+
+    <div id='main' >
+            <canvas id="cvs" width="400" height="200" style="position: absolute; left: 35%; top: 150px;" ></canvas>
+        
+    </div>
+    <div id='Test'>x</div>
+    <!-- <div id = "rect_metrics" style = "position: absolute; left: 40%; top: 360px;"><span class="glyphicon glyphicon-pencil"></span> element height: 0px, element width: 0px</div> -->
+</div>
+
+   </body>
+</html>

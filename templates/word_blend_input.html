@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Word Blend Input</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type=text/javascript src="{{ url_for('static', filename='js/word_blend_input.js') }}"></script> 
+	
+	<script type="text/javascript">
+		var all_concepts = {{all_concepts|tojson}}
+	</script>
+	
+	<style type="text/css">
+		.concept_div {
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            width: 30%;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .ribbon {
+            /*background-color: #C3D6F8;*/
+            background-color: #C5DDFD;
+            /*background-color: #f1f1f1;*/
+            /*margin-left: -5% !important;*/
+            padding: 5px;
+        }
+        #stationary{
+            position: fixed;
+            z-index:9999;
+            width:100%;
+            background-color: #FFFFFF;
+        }
+        .homebtn {
+            border-color:transparent;
+			background-color: transparent; 
+			border-radius:50%;
+			text-transform: capitalize;
+        }
+        #page_name {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bolder;
+            border-left: 1px solid grey;
+            padding-left: 15px;
+        }
+        .selected {
+            border: 2px solid green !important;
+        }
+        .added_row {
+            padding: 20px;
+            font-size:18px;
+            font-weight: bold;
+        }
+	</style>
+</head>
+<body>
+    <div class="container-fluid">    
+            <div class="row" id="stationary"> 
+                    <div class='col-md-12' > <div class='row ribbon'> 
+                                        <div style="display: inline-block; vertical-align: middle; padding-left:10px" ><form action="/welcome" method="get" id="form1">
+            
+                                            <button class='homebtn'><span style = 'font-size: 18px;'class='glyphicon glyphicon-home'> </span></button></form> </div>
+                                
+                                            <!-- <div style="display: inline-block; vertical-align: middle; padding-bottom:5px;"> 	<a href="/logout" class="logout">	<span class='logout	glyphicon glyphicon-log-out'></span></a></div> -->
+                                    <div id='page_name'>Word Blend Input</div>
+                                </div></div></div>
+        <br><br>
+        <div class="row">
+        	<div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h3>Input words and pick a concept to start blending!</h3> 
+            </div>
+            <div class="col-md-3"></div>		
+        </div>
+        <br><br>
+        <div class='row'>
+            <div class='row added_row' >
+                    <div class='col-md-4'>
+                            <div id="added_words"> ~word_input~ </div>
+                    </div>
+                    <div class='col-md-1'> +</div>
+                    <div class='col-md-4' >
+                           <div id="selected_concept"> ~concept_choice~ </div>
+                    </div>
+                    <div class='col-md-2' id='done_btn_div'>
+                    </div>
+            </div>
+            <div class='col-md-6'>
+                <div id ="word_in_div" >
+                    
+                    <input id ="word_in"  placeholder="input word or phrase" type="text" name="word">
+                </div>
+            
+            </div>
+            <div class='col-md-6'>
+                
+                <div id="concepts"></div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>
