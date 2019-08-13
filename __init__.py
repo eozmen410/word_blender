@@ -27,7 +27,8 @@ tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = 'a2ab7c745492748d1a0f61bc33664526'
 
-abs_path = '/var/www/word_blender/word_blender/'
+# abs_path = '/var/www/word_blender/word_blender/'
+abs_path = '/Users/samross/Desktop/Main/Barnard/Research/symbol_finder/'
 
 @app.route('/')
 def home():
@@ -80,4 +81,4 @@ def get_symbols_for_concept(user, file_id) :
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
