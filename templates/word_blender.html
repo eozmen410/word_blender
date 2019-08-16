@@ -4,21 +4,35 @@
    <head>
         <title> Word Blender</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet'>
         
         <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
         <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type=text/javascript src="{{ url_for('static', filename='js/fabric.js') }}"></script> 
-    <script type=text/javascript src="{{ url_for('static', filename='js/word_blender.js') }}"></script> 
     <script type=text/javascript src="{{ url_for('static', filename='js/fontsizer.js') }}"></script>
+    <script src="https://rawgit.com/iamdanfox/anno.js/gh-pages/dist/anno.js" type="text/javascript"></script>
+<script src="https://rawgit.com/litera/jquery-scrollintoview/master/jquery.scrollintoview.js" type="text/javascript"></script>
+
+<link href="https://rawgit.com/iamdanfox/anno.js/gh-pages/dist/anno.css" rel="stylesheet" type="text/css" />
+    <script type=text/javascript src="{{ url_for('static', filename='js/word_blender.js') }}"></script> 
+
     <script type="text/javascript">
+
         var input_words = {{input_words|tojson}}
         var symbols = {{symbols_for_concept|tojson}}
 	
 	</script>
       <style>
+          .boldish{
+              font-weight: Medium;
+          }
+          .bolder{
+              font-weight:700;
+              text-transform: capitalize;
+          }
            body{
-            font-family: arial,sans-serif;
+            overflow-x: hidden;
+            font-family: Roboto;
           }
         
          #mycanvas {
@@ -35,7 +49,7 @@
             overflow-y : auto;
             /* height: 100vh; */
             position:fixed;
-            font-family: arial,sans-serif;
+            font-family: Roboto;
             font-size: 14px;
             overflow:auto;
         }
@@ -44,15 +58,21 @@
              /* #ccc; */
             /* border-radius: 5px; */
             padding: 0!important;
+            margin-top:5px;
+            margin-bottom:5px;
+            padding-left:5px!important;
+            padding-right:5px!important;
         }
         .mybutt:focus{
             outline:none!important;
         }
         .font_display{
             /* padding:5px; */
-            padding-left:35px;
+            padding-left:5px;
             margin-bottom:5px;
             font-size:20px;
+            margin-right:0px;
+            margin-left:-5px;
         }
         .symbol {
             padding: 2px;
@@ -74,6 +94,7 @@
             /*margin-left: -5% !important;*/
             padding: 5px;
         }
+       
         .selectedimg {
             border: 3px solid #88BCEC;
     	}
@@ -90,7 +111,18 @@
             
         }
         .active_canvas {
-            border: 5px solid #C5DDFD; 
+
+            border: 2px solid #D7D7D7;
+
+            /* margin-left: 30px;
+            padding:10px;
+            visibility:visible!important; */
+            box-shadow: 0 2px 4px 0 rgba(0, 6, 36, 0.2), 0 3px 10px 0 rgba(0, 6, 36  , 0.19)!important;
+            /* border-radius:5px!important;
+            min-height: 248px; */
+
+
+            /* border: 5px solid #C5DDFD;  */
             /* rgb(45, 45, 187); */
         }
         .encompass>*{
@@ -99,12 +131,27 @@
 
         }
         .tools{
+            padding: 10px;
             visibility:hidden;
         }
+        #options{
+
+            background-color: #000624;
+            /* #DAEAFF; */
+            /* rgb(197, 221, 253); */
+            box-shadow: 0 2px 4px 0 rgba(0, 6, 36, 0.2), 0 3px 10px 0 rgba(0, 6, 36, 0.19)!important;
+            /* position:fixed; */
+
+        }
         .active_tools{
+
+            border: 2px solid #D7D7D7;
+            margin-left: 30px;
+            padding:10px;
             visibility:visible!important;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)!important;
+            box-shadow: 0 2px 4px 0 rgba(0, 6, 36, 0.2), 0 3px 10px 0 rgba(0, 6, 36, 0.19)!important;
             border-radius:5px!important;
+            min-height: 250px;
             /* width: 10px;
             height:10px; */
             /* width:300px; */
@@ -114,6 +161,7 @@
             /* border-radius: 5px; */
             /* margin: 20px; */
             height: 150px!important;
+  
             /* width: 150px!important; */
             
 
@@ -130,14 +178,22 @@
 
             /* border: 1px solid black; */
         }
+        .nopad{
+            padding:0!important;
+        }
         .donebutt{
             
+            /* width: 150px; */
+    /* margin-left: -15px; */
             color: #5f6367!important;
             /* border: 1px solid #D7D7D7; */
             border-radius: 5px;
             padding:4px 8px;
             border:1px solid white;
             background-color:#F0F0F0!important;
+        }
+        .donebutt:focus{
+            outline:none;
         }
         .donebutt:hover{
             border:  1px solid #F0F0F0!important;
@@ -150,18 +206,48 @@
 			border-radius:50%;
 			text-transform: capitalize;
 		}
+        .selected_butt{
+             border: 2px solid  #88BCEC!important;
+            /* border: 1px solid  white!important; */ 
+
+            /* border: 2px solid #000624!important;  */
+            /* outline: 2px solid #000624; */
+
+        }
+        
+
+        #hi{
+            color:white;
+        }
         #page_name {
             display: inline-block;
-            font-size: 24px;
+            color:white;
+            font-size: 20px;
             font-weight: bolder;
-            border-left: 1px solid grey;
+            border-left: .3px solid #a0a1a4;
             padding-left: 15px;
+            margin-top:5px;
+            margin-bottom:5px;
+
+        }
+        .ourinput{
+            border-radius:2px;
+            border: 1px solid #F0F0F0;
+
+        }
+       
+        .ourinput:focus{
+            outline:none!important;
+            border: 1px solid #88BCEC;
         }
         #page_container {
-            padding-top : 60px;
+            overflow-x: hidden;
+            overflow-y:auto;
         }
         .ourcolor{
             visibility: visible!important;
+           max-height: 50px;
+             overflow: auto;
         }
         .color{
             visibility:hidden;
@@ -175,6 +261,13 @@
             font-size:10px;
             font-family: 'Times New Roman', Times, serif;
         }
+        .element{
+  height:100px;
+  width:100px;
+  border:2px solid green;
+  margin:0px auto;
+}
+
         #main {
             visibility: hidden;
         }
@@ -186,37 +279,176 @@
   width: 50px;
   background-color: #555;
         }
+        .save_color_back{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .save_color_back_auto{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .hex_font_{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .save_color{
+            border: 2px solid #f0f0f0; 
+            border-radius: 50%; 
+            height: 25px; 
+            width:25px;
+        }
+        .jumbotron{
+            padding-top:10px;
+            padding-bottom:10px;
+            margin-bottom:12px;
+        }
+        .save_color_back:focus{
+            outline: none;
+        }
         .save_color:focus{
             outline: none;
         }
         #canvas_container{
-            margin-left:10px;
+            margin-left:4px;
+            /* margin-right:10px; */
         }
         #headerglyph{
             font-size: 11px;
             padding-bottom:4px;
             margin-bottom:2px;
         }
-       
+        #home{
+            padding-left:10px;
+            padding-right:2px;
+            
+        }
+        #start_info{
+        margin-top : 50px;
+        margin-bottom:12px;
+        }
+
+        #our_information{
+            margin-bottom: .5rem;
+            font-weight:500!important;
+        }
+       .tut_img{
+           width:440px;
+           height:220px;
+           
+       }
+       .tut_pic{
+           border-radius:2px;
+       }
+       figcaption{
+           text-align: center;
+           color: #5f6367!important;
+       }
+       #collapsible_tutorial{
+           margin-top:1px;
+           justify-content: center;
+       }
+
+      
       </style>
    </head>
    
    <body>
        <div class='container-fluid'>
 
-        
            
-      <div class="row" id="stationary"> 
-        <div class='col-md-12' > <div class='row ribbon'> 
+           
+
+        
+            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">     -->
+      <div class="row" id="stationary">
+            <!-- <button type="button" class="btn btn-primary" onclick="anno5.show()">anno1.show()</button> -->
+            <div id = "options">
+                    <div style="display: inline-block; vertical-align: center;"><form action="/welcome" method="get" id="form1" title="Symbol Finder home">
+       
+                   <button id = 'hi' style="display: inline-block; vertical-align: center;" id = 'home'><span class='glyphicon glyphicon-home'> </span></button></form> </div>
+                   <div style="display: inline-block; vertical-align: bottom;" id="forbutt"></div> 
+                   <div id='page_name'>Word Blender</div>  
+                   <!-- <button style="display: inline-block; vertical-align: center;" id = 'tour' style="display: inline-block; vertical-align: center;" >Start Tour</button> -->
+                </div></div>
+
+                <!-- </nav> -->
+
+                
+
+                   
+                   
+        <!-- <div class='col-md-12' > <div class='row ribbon'> 
                             <div style="display: inline-block; vertical-align: middle; padding-left:10px"><form action="/welcome" method="get" id="form1">
 
                                 <button ><span style = 'font-size: 18px;'class='glyphicon glyphicon-home'> </span></button></form> </div>
-                    
+                     -->
                                 <!-- <div style="display: inline-block; vertical-align: middle; padding-bottom:5px;"> 	<a href="/logout" class="logout">	<span class='logout	glyphicon glyphicon-log-out'></span></a></div> -->
-                        <div id='page_name'>Word Blender</div>
-                    </div></div></div>
+                        <!-- <div id='page_name'>Word Blender</div> -->
+                    <!-- </div></div></div> -->
 
     <div id ="page_container">
+            <div id = "start_info" class="jumbotron">
+                    <p id = "our_information" class="display-4"></p>
+                  
+                  </div>
+
+<button class= 'donebutt btn info-btn mybutt' id= "toggle_tutorial" >Hide Tutorial</button>
+
+
+
+
+<div id = "collapsible_tutorial" class="jumbotron">
+<div class = 'row' style = "justify-content: center" > 
+
+    <img class = 'tut_pic' src="/static/tutorial.png"  style="width:100%">
+
+</div>
+</div>
+<!-- 
+<figure class = ' col-md-2 tut_img' >
+        <figcaption>Pick your favorite word blend</figcaption>
+<img class = 'tut_pic' src="/static/change_font.png"  style="width:100%">
+
+</figure>
+
+<figure  class = 'col-md-1 tut_img' >
+        <figcaption>Change the font</figcaption>
+<img  class = 'tut_pic' src="/static/change_font_color.png"  style="width:100%">
+
+</figure>
+
+<figure  class = 'col-md-1 tut_img' >
+        <figcaption>Change the font color</figcaption>
+<img src="/static/corgi.jpg"  style="width:100%">
+
+</figure>
+
+<figure  class = 'col-md-1 tut_img' >
+        <figcaption>Change the background color</figcaption>
+<img  class = 'tut_pic' src="/static/corgi.jpg" style="width:100%">
+
+</figure>
+
+<figure  class = 'col-md-1 tut_img' >
+        <figcaption>Download</figcaption>
+<img  class = 'tut_pic' src="/static/corgi.jpg" style="width:100%">
+
+</figure> -->
+  
+</div>
+</div>
+
+        </div>
+
+               
+
+
         <div class='row'>
             <!-- <div class='col-md-2' id='font_sidebar'>Fonts List:<div id='font_container'></div></div> -->
             <div class='col-md-12'id='canvas_container'>
@@ -237,5 +469,6 @@
     <!-- <div id = "rect_metrics" style = "position: absolute; left: 40%; top: 360px;"><span class="glyphicon glyphicon-pencil"></span> element height: 0px, element width: 0px</div> -->
 </div>
 
+</div>
    </body>
 </html>
