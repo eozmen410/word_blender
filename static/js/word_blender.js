@@ -1658,7 +1658,7 @@ function make_canvas_w_random_id(_img) {
     
         active_canvas = this
 
-      $("#" + this.id)[0].scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+      $("#" + this.id)[0].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
         // var yes = document.getElementById( this.id)
         // (yes).scrollIntoView();
         $("#tools_" + active_canvas.id).show()
