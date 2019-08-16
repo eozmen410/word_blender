@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+        <title> Word Blender</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,400&display=swap" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="../static/js/home.js"></script>
+        
+	
+	</script>
+      <style>
+
+        body{
+
+            margin:0;
+            padding:0;
+            background-color: #030d31; 
+
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .bg_img { 
+            position: absolute;
+            /*max-height: 100%;*/
+            width:100%;
+   
+        }
+
+        button{
+			border-color:transparent;
+			background-color: transparent; 
+			border-radius:50%;
+			text-transform: capitalize;
+
+		}
+        #page_name {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bolder;
+            /*border-left: 1px solid grey;*/
+            padding-left: 15px;
+            background-color: #fff; 
+            width: 100%;
+        }
+        #page_container {
+            /*padding-top : 60px;*/
+            background-color: #fff; 
+            width: 100%;
+
+        }
+
+        #stationary{
+            position: fixed;
+            z-index:2;
+            width:100%;
+            background-color: #FFFFFF;
+        }
+
+        .container{
+            position: relative;
+            padding:0;
+            width: 100%;
+            height: 100vh;
+            scroll-behavior: smooth;
+            overflow: hidden; 
+        }
+
+        .section{
+            width: 100%;
+            height: 100vh;
+            background-size:cover;
+            overflow:hidden
+
+        }
+
+        .section:nth-child(1){
+            background-color:#030d31;
+        }
+
+        .section:nth-child(2){
+            background-color:#fff;
+        }
+
+        .section:nth-child(3){
+            background-color:#030d31;
+        }
+
+        .section:nth-child(4){
+            background-color:#fff;
+        }
+
+        .section:nth-child(5){
+            background-color:#030d31;
+        }
+
+        .section:nth-child(6){
+            background-color:#fff;
+            height:200px;
+        }
+
+        .section_text_blue{
+            text-align:center;
+            padding-top:25px;
+            font-size:40px;
+            color:#030d31;
+            font-family:raleway;
+            font-weight:bolder;
+
+        }
+
+        .section_text_white{
+            text-align:center;
+            padding-top:25px;
+            font-size:40px;
+            color:#fff;
+            font-family:raleway;
+            font-weight:bolder;
+        }
+
+        .customer_section_img{
+            padding-top:100px
+            z-index:1000;
+            max-width:40%;
+        }
+
+        .use_section_img{
+            z-index:1000;
+            height:100%;
+
+            border:1px solid #fff;
+
+        }
+
+        .about_section_img{
+            z-index:1000;
+            height:100%;
+            width:90%;
+
+            border:1px solid #fff;
+            object-fit: cover;
+        }
+
+        .section_inner_text{
+            padding-top:50px;
+            padding-left:100px;
+            font-size:20px;
+            color:#030d31;
+            font-family:raleway;
+            text-align:center;
+        }
+
+        .row{
+            width:100%;
+            
+
+            margin:0;
+
+
+        }
+
+        .subtitle{
+            font-size:20px;
+            color:#fff;
+            font-family:raleway;
+            text-align:center;
+        }
+
+        .name_subtitle{
+            padding-top:10px;
+            padding-bottom: 30px;
+            font-size:15px;
+            color:#fff;
+            font-family:raleway;
+            text-align:center;
+        }
+
+        .link:hover{
+            color:#98B4DB !important;
+            text-decoration: none;
+        }
+
+        .link:active, .link:visited, .link:link{
+            text-decoration: none;
+            color:#fff;
+
+        }
+
+        .icon{
+            margin-top:20px;
+            display:inline-block;
+            height:50px;
+        }
+
+
+        .nav{
+
+            background: #000624;
+            position: absolute;
+            z-index:2000;
+            top: 0;
+            width: 100%;
+            height:38px;
+        }
+
+        .nav_text {
+
+            display:inline-block;
+            vertical-align: middle;
+            font-size: 20px;
+            font-family: Roboto;
+            font-weight: bolder;
+            padding-left: 15px;
+            color: #fff;
+            line-height:38px;
+            text-align:left;
+        }
+ 
+        .link_text{
+            display:inline-block;
+            vertical-align: middle;
+            font-size: 15px;
+            font-family: Roboto;
+            padding-right: 15px;
+            color: #fff;
+            line-height:38px;
+            text-align:right;
+        }
+
+        .link_text:hover{
+            text-decoration:none;
+            color:#98B4DB;
+        }
+
+
+      </style>
+   </head>
+   
+   <body>
+
+        <div class='container'>
+                        
+            <!-- Section 1 -->
+            <div class='section'>
+
+                <nav class="nav">
+                <div class="row" style="width:100%">
+                    <div class="nav_text col-md-6">WordBlender</div>
+                    <div class="col-md-6" style="text-align:right">
+                        <a class="link_text" href="#our_customers">Our Customers</a>
+                        <a class="link_text" href="#use_cases">Use Cases</a>
+                        <a class="link_text" href="#try_it">Try It</a>
+                        <a class="link_text" href="#about_us">About Us</a>
+                        <a class="link_text" href="#contact">Contact</a>
+                    </div>
+                </div>
+                </nav>
+
+                
+                <!-- Light On and Off -->
+                <img class="bg_img" id="hide" onclick="hide();" src="../static/images/WordsInspire_Light.jpg">
+                </div>
+
+            </div>
+
+            <!-- Section 2 -->
+            <div class='section'>
+                <a id="our_customers"></a>
+
+
+
+                <div class='section_text_blue row' style="padding-bottom:40px">Our Customers</div>
+                <div class='row' style="text-align:center; padding-bottom:40px">
+                    <div class="col-md-6 section_inner_text">Columbia Classical Performers</div>
+                    <img class="col-md-6 customer_section_img" src="../static/images/CCP1.png"></img>
+                </div>
+                <div class='row' style="text-align:center; padding-bottom:40px">
+                    <div class="col-md-6 section_inner_text">Columbia Spectator</div>
+                    <img class="col-md-6 customer_section_img" src="../static/images/spec.png"></img>
+                </div>
+                <div class='row' style="text-align:center; padding-bottom:40px">
+                    <div class="col-md-6 section_inner_text">Columbia ADI</div>
+                    <img class="col-md-6 customer_section_img" src="../static/images/ADI1.png"></img>
+                </div>
+
+            </div>
+
+            <!-- Secton 3 -->
+            <div class='section'>
+                <a id="use_cases"></a>
+                <div class='section_text_white' style="padding-bottom: 30px">Use Cases</div>
+                <div class='row' style="text-align: center; padding-top:50px; height:60%; padding-left:10px; padding-right:10px">
+                        <div class="col-md-4" style="height:100%"><img class="use_section_img" src="../static/images/junzi.jpg"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="use_section_img" src="../static/images/anxiety.png"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="use_section_img" src="../static/images/love.png"></img></div>
+                </div>
+                <div class="row" style="padding-top:40px;">
+                    <div class="col-md-4 subtitle">Restaurants</div>
+                    <div class="col-md-4 subtitle">Posters</div>
+                    <div class="col-md-4 subtitle">Cards</div>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class='section'>
+                <a id="try_it"></a>
+                <div class='section_text_blue'>Try It</div>
+            </div>
+
+            <!-- Section 5 -->
+            <div class='section'>
+                <a id="about_us"></a>
+                <div class='section_text_white' style="padding-bottom: 30px">About Us</div>
+                <div class='row' style="text-align: center; height:30%; padding-left:10px; padding-right:10px">
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/lydia_photo.jpeg"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/jen_photo.jpeg"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/maria_photo.jpeg"></img></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 name_subtitle"><a class="name_subtitle link" href="https://www.cs.columbia.edu/~chilton/" target="_blank">Prof. Lydia Chilton, Faculty Advisor</a></div>
+                    <div class="col-md-4 name_subtitle">Ecenaz Ozmen, Technical Lead</div>
+                    <div class="col-md-4 name_subtitle">Maria Kogan, UI Lead</div>
+                </div>
+                <div class='row' style="text-align: center; height:30%; padding-left:10px; padding-right:10px">
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/claire_photo.jpeg"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/sam_photo.jpeg"></img></div>
+                        <div class="col-md-4" style="height:100%"><img class="about_section_img" src="../static/images/annie_photo.jpeg"></img></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 name_subtitle">Claire Chen, Designer in Residence</div>
+                    <div class="col-md-4 name_subtitle">Sam Ross, Design Lead</div>
+                    <div class="col-md-4 name_subtitle">Annie Sui, Outreach and Innovation</div>
+                </div>
+
+
+            </div>
+
+            <!-- Section 6 -->
+            <div class='section'>
+                <a id="contact"></a>
+                <div class='section_text_blue'>Contact</div>
+
+                <div class="row col-md-4" style="text-align:center">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="col-md-4" style="visibility: hidden"><img class="icon" src="../static/images/twitter_logo.png"></img></div>
+                        <div class="col-md-4"><a href='https://www.facebook.com/visiblends/' target="_blank"><img class="icon" src="../static/images/facebook_logo.png"></a></img></div>
+                        <div class="col-md-4" style="visibility: hidden"><img class="icon" src="../static/images/instagram_logo.png"></img></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+           
+   </body>
+</html>

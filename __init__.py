@@ -28,11 +28,11 @@ app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = 'a2ab7c745492748d1a0f61bc33664526'
 
 # abs_path = '/var/www/word_blender/word_blender/'
-abs_path = '/Users/samross/Desktop/Main/Barnard/Research/symbol_finder/'
+abs_path = '/Users/samross/Desktop/Main/Barnard/Research/word_blender/'
 
 @app.route('/')
 def home():
-    return 'home page'
+    return render_template("home.html")
 
 @app.route('/word_blend_input', methods=['POST', 'GET'])
 def word_blend_input():
