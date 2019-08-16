@@ -451,11 +451,18 @@ $("#toggle_tutorial").click(function(){
                     // console.log('in here')
                     for (var select in symbols[key]['selected_files']) {
                         for (var j = 0; j< symbols[key]['selected_files'][select]['shapes'].length; j++) {
-                           
+                           if (symbols[key]['selected_files'][select]['deleted']== "True") {
+
+                            continue;
+                           }
                         
                             var _letter = symbols[key]['selected_files'][select]['shapes'][j]
                             var _img = symbols[key]
-                            if ( concept.indexOf(_letter)>0) {
+
+                            console.log('********************************************')
+                            console.log(concept.indexOf(_letter) + " LETTER : " + _letter)
+
+                            if ( concept.indexOf(_letter)>=0) {
                                 
                                 var c = make_canvas_w_random_id( _img)
                                 var c_id = $(c).attr('id')
