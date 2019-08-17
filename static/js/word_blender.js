@@ -462,7 +462,7 @@ $("#toggle_tutorial").click(function(){
                             console.log('********************************************')
                             console.log(concept.indexOf(_letter) + " LETTER : " + _letter)
 
-                            if ( concept.indexOf(_letter)>=0) {
+                            if ( _letter != "" && concept.indexOf(_letter)>=0) {
                                 
                                 var c = make_canvas_w_random_id( _img)
                                 var c_id = $(c).attr('id')
@@ -474,6 +474,7 @@ $("#toggle_tutorial").click(function(){
                                 canvas_ids_dict[c_id]['font_color'] = "000000"
                                 canvas_ids_dict[c_id]['back_color'] = "FFFFFF"
                                 canvas_ids_dict[c_id]['active_font'] = "font_0"
+                                canvas_ids_dict[c_id]['letter'] = _letter
                                
                                 populate_canvas_for_word_letter(c, concept, $(c).data('image'), $(c).data('letter'), $(c).data('file'))
                                curr_sum++;
